@@ -1,1 +1,69 @@
 
+package com.tap2;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class programm5 {
+	public static void main(String args[]) {
+	
+		Connection con=null;
+		Statement stmt=null;
+		ResultSet res=null;
+		String url="jdbc:mysql://localhost:3306/jdbc";
+		String uname="root";
+		String pass="Vishal@#1234";
+        String query="SELECT * FROM employee";		
+        String query1="UPDATE `employee` set `idEmployee`=109 WHERE `idEmployee`=7";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			 con = DriverManager.getConnection(url, uname, pass);
+			 stmt = con.createStatement();
+			 int res1 = stmt.executeUpdate(query1);
+			 System.out.println(res1);
+			  res = stmt.executeQuery(query);
+			 print(res);
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			close(res,stmt,con);
+		}
+	}
+
+	private static void print(ResultSet res) throws SQLException {
+		while(res.next()) {
+			System.out.println(res.getInt(1)+res.getString(2)+res.getString(3)+res.getString(4)+res.getString(5));
+		}	
+	}
+
+	private static void close( ResultSet res,Statement stmt, Connection con) {
+            try {
+            	if(res!=null) {
+            		res.close();
+            	}
+            }catch(SQLException e) {
+            	e.printStackTrace();
+            }
+		    try {
+            	if(stmt!=null) {
+            		stmt.close();
+            	}
+            }catch(SQLException e) {
+            	e.printStackTrace();
+            }
+            try {
+            	if(con!=null) {
+            		con.close();
+            	}
+            }catch(SQLException e) {
+            	e.printStackTrace();
+            }
+	}
+}
